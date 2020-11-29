@@ -1,0 +1,86 @@
+package default1;
+import org.apache.spark.SparkConf;
+import org.apache.spark.SparkContext;
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SparkSession;
+import org.apache.spark.sql.functions;
+import org.apache.spark.sql.api.java.UDF1;
+import org.apache.spark.sql.api.java.UDF2;
+import org.apache.spark.sql.types.DataTypes;
+
+public class SingleColumnUDF {
+
+	public SingleColumnUDF() {
+		
+	}
+
+	public static void main(String[] args) {
+		
+				
+				
+				SparkConf sparkConf = new SparkConf().setAppName("single-column-udf")
+                .setMaster("local[2]").set("spark.executor.memory","2g");
+				// create Spark Context
+				SparkContext context = new SparkContext(sparkConf);
+				// create spark Session
+				SparkSession sparkSession = new SparkSession(context);	
+				
+				
+				
+				Dataset<Row> products= sparkSession.read().format("com.databricks.spark.csv").option("header","true").load("C:\\Users\\lenovo\\Downloads\\phone.csv");
+				
+				products.show(false);
+			
+				
+			
+				
+				
+				//create udf
+				UDF2<String,String,String>  formatId2= new UDF2<String,String,String>(){
+					
+				
+
+					@Override
+					public String call(String category, String subcategory) throws Exception {
+						
+						return category + "->"+ subcategory;
+					}
+					
+					
+				};
+				
+				
+			
+				
+				
+				sparkSession.udf().register("category_hierarchy", formatId2 ,DataTypes.StringType);
+				
+				
+				
+				
+				products=products.withColumn("category_hierarchy",functions.callUDF("category_hierarchy",products.col("category"),products.col("subcategory")));
+				
+				
+				
+				
+//	UDF1<String,String>  formatId= new UDF1<String,String>(){
+//					
+//					public String call (String id) throws Exception{
+//						return "00"+id;
+//					}
+//					
+//					
+//				};
+//				
+//				sparkSession.udf().register("format_id",formatId,DataTypes.StringType);
+//			products=products.withColumn("formatted_id",functions.callUDF("format_id",products.col("id")));
+//				
+				products.show(false);
+				
+				
+				
+
+	}
+
+}
