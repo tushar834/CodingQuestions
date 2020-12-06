@@ -1,0 +1,21 @@
+//sum of array elements from starting index to every index before that
+public class SumOfArrayElements{
+
+     public static void main(String []args){
+     //declaration of array
+     int nums[]={1,2,3,4};
+     //adding array elements
+    for(int i=1;i<nums.length;i++)
+        {  //nums array declaration
+          nums[i]=nums[i]+nums[i-1];                  
+        }
+        
+        for(int sum:nums)
+        {   //printing array elements
+            System.out.println(sum);            
+            
+        }
+      
+     }
+}
+
