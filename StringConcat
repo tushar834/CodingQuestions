@@ -1,0 +1,42 @@
+class Solution {
+    public boolean arrayStringsAreEqual(String[] word1, String[] word2) {
+        
+        
+        
+        String t1=word1[0];
+        
+        
+        for(int i=1;i<word1.length;i++)
+            
+        {
+            
+            t1=t1+word1[i];
+            
+        }
+        
+           String t2=word2[0];
+     for(int i=1;i<word2.length;i++)
+            
+        {
+            
+            t2=t2+word2[i];
+            
+        }
+        
+        
+        
+        if(t1.equals(t2))
+            return true;
+        
+        else
+            return false;
+        
+        
+        
+        
+            }
+}
+        
+        
+        
+      
